@@ -6,6 +6,13 @@
     <title>StartupStack - AI-Powered SaaS Bundle for Entrepreneurs</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+    (function(){
+        emailjs.init("7gqJJx6DqBcygdMlE");
+    })();
+</script>
+
 </head>
 <body class="bg-gray-900 text-white">
     <!-- Hero Section -->
@@ -151,8 +158,24 @@
         
         function startCheckout() {
             // Replace with your Stripe checkout URL
-            window.location.href = 'https://buy.stripe.com/test_YOUR_PAYMENT_LINK';
+            window.location.href = 'https://buy.stripe.com/test_28E14n6AU8a5aUP1vmew800';
         }
-    </script>
+        function sendWelcomeEmail(userEmail, userName) {
+             const templateParams = {
+            to_email: userEmail,
+            to_name: userName,
+            message: `Welcome to StartupStack! Your AI-powered toolkit is ready. 
+                 Login here: https://yourdomain.com/dashboard
+                 Need help? Reply to this email.`
+            };
+
+            emailjs.send('service_853d4hu', 'template_4m3pb3v', templateParams)
+             .then(function(response) {
+            console.log('Welcome email sent!', response.status, response.text);
+            }, function(error) {
+            console.log('Email failed...', error);
+            });
+}
+        </script>
 </body>
 </html>
