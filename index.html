@@ -176,7 +176,7 @@
         //     console.log('Email failed...', error);
         //     });
         //         }
-            // Email Functions
+    // Email Functions
    
     function sendWelcomeEmail(userEmail, userName = 'New User') {
         const templateParams = {
@@ -252,7 +252,7 @@
     }
 
     // Stripe Checkout (Payment Link Method - Simplest)
-    // function startCheckout() {
+    function startCheckout() {
     //     const email = localStorage.getItem('userEmail');
     //     if (!email) {
     //         captureEmail();
@@ -263,8 +263,8 @@
     //     window.open('https://buy.stripe.com/test_28E14n6AU8a5aUP1vmew800', '_blank');
         
     //     // Option B: If you set up Netlify functions, use this instead:
-    //     checkoutWithSession();
-    // }
+        checkoutWithSession();
+    }
 
     // Advanced checkout with session (only if you set up backend)
     async function checkoutWithSession() {
