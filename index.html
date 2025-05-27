@@ -185,7 +185,7 @@
             `
         };
 
-        emailjs.send('service_853d4hu', 'template_4m3pb3v', templateParams)
+        return emailjs.send('service_853d4hu', 'template_4m3pb3v', templateParams)
             .then(function(response) {
                 console.log('Welcome email sent!', response.status);
                 showNotification('Welcome email sent! Check your inbox.');
