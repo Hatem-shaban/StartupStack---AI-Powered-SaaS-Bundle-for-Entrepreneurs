@@ -252,55 +252,55 @@
     }
 
     // Stripe Checkout (Payment Link Method - Simplest)
-    function startCheckout() {
-        const email = localStorage.getItem('userEmail');
-        if (!email) {
-            captureEmail();
-            return;
-        }
+    // function startCheckout() {
+    //     const email = localStorage.getItem('userEmail');
+    //     if (!email) {
+    //         captureEmail();
+    //         return;
+    //     }
         
-        // Option A: Payment Link (Recommended for MVP)
-        window.open('https://buy.stripe.com/test_YOUR_PAYMENT_LINK', '_blank');
+    //     // Option A: Payment Link (Recommended for MVP)
+    //     window.open('https://buy.stripe.com/test_28E14n6AU8a5aUP1vmew800', '_blank');
         
-        // Option B: If you set up Netlify functions, use this instead:
-        // checkoutWithSession();
-    }
+    //     // Option B: If you set up Netlify functions, use this instead:
+    //     checkoutWithSession();
+    // }
 
     // Advanced checkout with session (only if you set up backend)
-    // async function checkoutWithSession() {
-    //     const stripe = Stripe('pk_test_51Ps2dzE92IbV5FBUbYDh6nBs2WLVSofAVNDwp5emPBrLW1vdaRjZXVW2o6A9nYvPQDqy8k95sd8bQmF497HlHLUk00a07sJfdo');
+    async function checkoutWithSession() {
+        const stripe = Stripe('pk_test_51Ps2dzE92IbV5FBUbYDh6nBs2WLVSofAVNDwp5emPBrLW1vdaRjZXVW2o6A9nYvPQDqy8k95sd8bQmF497HlHLUk00a07sJfdo');
         
-    //     try {
-    //         const response = await fetch('/.netlify/functions/create-checkout-session', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({
-    //                 priceId: 'prod_SNNoPa6XKmWXaR',
-    //                 customerEmail: localStorage.getItem('userEmail') || ''
-    //             }),
-    //         });
+        try {
+            const response = await fetch('/.netlify/functions/create-checkout-session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    priceId: 'prod_SNNoPa6XKmWXaR',
+                    customerEmail: localStorage.getItem('userEmail') || ''
+                }),
+            });
             
-    //         const session = await response.json();
+            const session = await response.json();
             
-    //         if (session.error) {
-    //             alert('Error: ' + session.error);
-    //             return;
-    //         }
+            if (session.error) {
+                alert('Error: ' + session.error);
+                return;
+            }
             
-    //         const result = await stripe.redirectToCheckout({
-    //             sessionId: session.id,
-    //         });
+            const result = await stripe.redirectToCheckout({
+                sessionId: session.id,
+            });
             
-    //         if (result.error) {
-    //             alert(result.error.message);
-    //         }
-    //     } catch (error) {
-    //         console.error('Checkout error:', error);
-    //         alert('Something went wrong. Please try again.');
-    //     }
-    // }
+            if (result.error) {
+                alert(result.error.message);
+            }
+        } catch (error) {
+            console.error('Checkout error:', error);
+            alert('Something went wrong. Please try again.');
+        }
+    }
 
     // Utility functions
     function scrollToPrice() {
