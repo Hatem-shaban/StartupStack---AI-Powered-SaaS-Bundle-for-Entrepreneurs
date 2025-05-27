@@ -228,20 +228,20 @@
         startCheckout();
     }
 
-        // // Stripe Checkout (Payment Link Method - Simplest)
-        // function startCheckout() {
-        // const email = localStorage.getItem('userEmail');
-        // if (!email) {
-        //     captureEmail();
-        //     return;
-        // }
+        // Stripe Checkout (Payment Link Method - Simplest)
+        function startCheckout() {
+        const email = localStorage.getItem('userEmail');
+        if (!email) {
+            captureEmail();
+            return;
+        }
         
-        // // Option A: Payment Link (Recommended for MVP)
+        // Option A: Payment Link (Recommended for MVP)
         // window.open('https://buy.stripe.com/test_28E14n6AU8a5aUP1vmew800', '_blank');
         
-        // // Option B: If you set up Netlify functions, use this instead:
-        // checkoutWithSession();
-        // }
+        // Option B: If you set up Netlify functions, use this instead:
+        checkoutWithSession();
+        }
 
     //Advanced checkout with session (only if you set up backend)
     async function checkoutWithSession() {
