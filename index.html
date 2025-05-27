@@ -245,38 +245,50 @@
 
     //Advanced checkout with session (only if you set up backend)
     async function checkoutWithSession() {
-        const stripe = Stripe('pk_test_51Ps2dzE92IbV5FBUbYDh6nBs2WLVSofAVNDwp5emPBrLW1vdaRjZXVW2o6A9nYvPQDqy8k95sd8bQmF497HlHLUk00a07sJfdo');
+    const stripe = Stripe('pk_test_51Ps2dzE92IbV5FBUbYDh6nBs2WLVSofAVNDwp5emPBrLW1vdaRjZXVW2o6A9nYvPQDqy8k95sd8bQmF497HlHLUk00a07sJfdo');
+    
+    try {
+        console.log('Starting checkout process...');
+        const email = localStorage.getItem('userEmail');
+        console.log('User email:', email);
+
+        const response = await fetch('/.netlify/functions/create-checkout-session', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                priceId: 'price_1RSd2vE92IbV5FBURORRmKR6ss',
+                customerEmail: email || ''
+            }),
+        });
         
-        try {
-            const response = await fetch('/.netlify/functions/create-checkout-session', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    priceId: 'price_1RSd2vE92IbV5FBURORRmKR6ss',
-                    customerEmail: localStorage.getItem('userEmail') || ''
-                }),
-            });
-            
-            const session = await response.json();
-            
-            if (session.error) {
-                alert('Error: ' + session.error);
-                return;
-            }
-            
-            const result = await stripe.redirectToCheckout({
-                sessionId: session.id,
-            });
-            
-            if (result.error) {
-                alert(result.error.message);
-            }
-        } catch (error) {
-            console.error('Checkout error:', error);
-            alert('Something went wrong. Please try again.');
+        console.log('Checkout session response:', response.status);
+        const session = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
+        
+        if (session.error) {
+            console.error('Session error:', session.error);
+            alert('Error: ' + session.error);
+            return;
+        }
+        
+        console.log('Redirecting to checkout...');
+        const result = await stripe.redirectToCheckout({
+            sessionId: session.id,
+        });
+        
+        if (result.error) {
+            console.error('Stripe error:', result.error);
+            alert(result.error.message);
+        }
+    } catch (error) {
+        console.error('Checkout error:', error);
+        alert('Something went wrong. Please try again.');
+    }
     }
 
     // Utility functions
