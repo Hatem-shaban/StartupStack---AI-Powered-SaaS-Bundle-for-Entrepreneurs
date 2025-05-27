@@ -152,6 +152,7 @@
     </section>
 
     <script>
+<<<<<<< HEAD
         // function scrollToPrice() {
         //     document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
         // }
@@ -345,3 +346,32 @@
     </script>
 </body>
 </html>
+=======
+        function scrollToPrice() {
+            document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function startCheckout() {
+            // Replace with your Stripe checkout URL
+            window.location.href = 'https://buy.stripe.com/test_28E14n6AU8a5aUP1vmew800';
+        }
+        function sendWelcomeEmail(userEmail, userName) {
+             const templateParams = {
+            to_email: userEmail,
+            to_name: userName,
+            message: `Welcome to StartupStack! Your AI-powered toolkit is ready. 
+                 Login here: https://yourdomain.com/dashboard
+                 Need help? Reply to this email.`
+            };
+
+            emailjs.send('service_853d4hu', 'template_4m3pb3v', templateParams)
+             .then(function(response) {
+            console.log('Welcome email sent!', response.status, response.text);
+            }, function(error) {
+            console.log('Email failed...', error);
+            });
+}
+        </script>
+</body>
+</html>
+>>>>>>> 9550c7454ccfbd4c087047f84e30bda8467674e9
