@@ -178,7 +178,7 @@
         //         }
             // Email Functions
    
-         function sendWelcomeEmail(userEmail, userName = 'New User') {
+    function sendWelcomeEmail(userEmail, userName = 'New User') {
         const templateParams = {
             to_email: userEmail,
             to_name: userName,
@@ -252,19 +252,19 @@
     }
 
     // Stripe Checkout (Payment Link Method - Simplest)
-    function startCheckout() {
-        const email = localStorage.getItem('userEmail');
-        if (!email) {
-            captureEmail();
-            return;
-        }
+    // function startCheckout() {
+    //     const email = localStorage.getItem('userEmail');
+    //     if (!email) {
+    //         captureEmail();
+    //         return;
+    //     }
         
-        // Option A: Payment Link (Recommended for MVP)
-        window.open('https://buy.stripe.com/test_YOUR_PAYMENT_LINK', '_blank');
+    //     // Option A: Payment Link (Recommended for MVP)
+    //     window.open('https://buy.stripe.com/test_YOUR_PAYMENT_LINK', '_blank');
         
-        // Option B: If you set up Netlify functions, use this instead:
-        // checkoutWithSession();
-    }
+    //     // Option B: If you set up Netlify functions, use this instead:
+    //     // checkoutWithSession();
+    // }
 
     // Advanced checkout with session (only if you set up backend)
     async function checkoutWithSession() {
@@ -277,7 +277,7 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    priceId: 'price_YOUR_ACTUAL_PRICE_ID',
+                    priceId: 'prod_SNNoPa6XKmWXaR',
                     customerEmail: localStorage.getItem('userEmail') || ''
                 }),
             });
