@@ -208,40 +208,31 @@
 
         // User signup with email capture
         async function captureEmail() {
+        try {
         const email = prompt('Enter your email to start your free trial:');
+        console.log('Captured email:', email);
+        
         if (!email || !email.includes('@')) {
             alert('Please enter a valid email address');
-            return;
+            return false;
         }
         
         localStorage.setItem('userEmail', email);
-        sendWelcomeEmail(email);
+        console.log('Email stored in localStorage');
         
-        // Store in Supabase (if you set it up)
-        if (window.supabase) {
-            await window.supabase
-                .from('users')
-                .insert([{ email: email }]);
+        await sendWelcomeEmail(email);
+        console.log('Welcome email sent successfully');
+        
+        return true;
+        } catch (error) {
+        console.error('Error in captureEmail:', error);
+        alert('There was an error processing your request. Please try again.');
+        return false;
         }
-        
-        // Proceed to checkout
-        startCheckout();
     }
 
         // Stripe Checkout (Payment Link Method - Simplest)
-        function startCheckout() {
-        const email = localStorage.getItem('userEmail');
-        if (!email) {
-            captureEmail();
-            return;
-        }
         
-        // Option A: Payment Link (Recommended for MVP)
-        // window.open('https://buy.stripe.com/test_28E14n6AU8a5aUP1vmew800', '_blank');
-        
-        // Option B: If you set up Netlify functions, use this instead:
-        checkoutWithSession();
-        }
 
     //Advanced checkout with session (only if you set up backend)
     async function checkoutWithSession() {
@@ -290,6 +281,26 @@
         alert('Something went wrong. Please try again.');
     }
     }
+
+    async function startCheckout() {
+    const email = localStorage.getItem('userEmail');
+    console.log('Starting checkout with email:', email);
+    
+    if (!email) {
+        const emailCaptured = await captureEmail();
+        if (!emailCaptured) {
+            console.log('Email capture failed or was cancelled');
+            return;
+        }
+    }
+    
+    try {
+        await checkoutWithSession();
+    } catch (error) {
+        console.error('Checkout failed:', error);
+        alert('Unable to start checkout. Please try again.');
+    }
+}
 
     // Utility functions
     function scrollToPrice() {
