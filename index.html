@@ -7,11 +7,12 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-<script>
-    (function(){
-        emailjs.init("7gqJJx6DqBcygdMlE");
-    })();
-</script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        (function(){
+            emailjs.init("7gqJJx6DqBcygdMlE");
+        })();
+    </script>
 
 </head>
 <body class="bg-gray-900 text-white">
@@ -152,7 +153,8 @@
     </section>
 
     <script>
-
+ // Initialize Stripe at the top of your script section
+    const stripe = Stripe('pk_test_51Ps2dzE92IbV5FBUbYDh6nBs2WLVSofAVNDwp5emPBrLW1vdaRjZXVW2o6A9nYvPQDqy8k95sd8bQmF497HlHLUk00a07sJfdo');
         // Email Functions
    
         function sendWelcomeEmail(userEmail, userName = 'New User') {
@@ -236,7 +238,6 @@
 
     //Advanced checkout with session (only if you set up backend)
     async function checkoutWithSession() {
-    const stripe = Stripe('pk_test_51Ps2dzE92IbV5FBUbYDh6nBs2WLVSofAVNDwp5emPBrLW1vdaRjZXVW2o6A9nYvPQDqy8k95sd8bQmF497HlHLUk00a07sJfdo');
     
     try {
         console.log('Starting checkout process...');
