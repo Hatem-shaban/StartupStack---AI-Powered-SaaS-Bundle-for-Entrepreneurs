@@ -155,30 +155,10 @@
         function scrollToPrice() {
             document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
         }
-        
-        // function startCheckout() {
-        //     // Replace with your Stripe checkout URL
-        //     window.location.href = 'https://buy.stripe.com/test_28E14n6AU8a5aUP1vmew800';
-        // }
-        // function sendWelcomeEmail(userEmail, userName) {
-        //      const templateParams = {
-        //     to_email: userEmail,
-        //     to_name: userName,
-        //     message: `Welcome to StartupStack! Your AI-powered toolkit is ready. 
-        //          Login here: https://yourdomain.com/dashboard
-        //          Need help? Reply to this email.`
-        //     };
 
-        //     emailjs.send('service_853d4hu', 'template_4m3pb3v', templateParams)
-        //      .then(function(response) {
-        //     console.log('Welcome email sent!', response.status, response.text);
-        //     }, function(error) {
-        //     console.log('Email failed...', error);
-        //     });
-        //         }
-    // Email Functions
+        // Email Functions
    
-    function sendWelcomeEmail(userEmail, userName = 'New User') {
+        function sendWelcomeEmail(userEmail, userName = 'New User') {
         const templateParams = {
             to_email: userEmail,
             to_name: userName,
@@ -217,7 +197,7 @@
             });
     }
 
-    function sendTrialEndingEmail(userEmail) {
+        function sendTrialEndingEmail(userEmail) {
         const templateParams = {
             to_email: userEmail,
             subject: 'Your StartupStack trial ends in 3 days',
@@ -229,8 +209,8 @@
         emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams);
     }
 
-    // User signup with email capture
-    async function captureEmail() {
+        // User signup with email capture
+        async function captureEmail() {
         const email = prompt('Enter your email to start your free trial:');
         if (!email || !email.includes('@')) {
             alert('Please enter a valid email address');
@@ -251,56 +231,56 @@
         startCheckout();
     }
 
-    // Stripe Checkout (Payment Link Method - Simplest)
-    function startCheckout() {
-        const email = localStorage.getItem('userEmail');
-        if (!email) {
-            captureEmail();
-            return;
-        }
+        // // Stripe Checkout (Payment Link Method - Simplest)
+        // function startCheckout() {
+        // const email = localStorage.getItem('userEmail');
+        // if (!email) {
+        //     captureEmail();
+        //     return;
+        // }
         
-        // Option A: Payment Link (Recommended for MVP)
-        window.open('https://buy.stripe.com/test_28E14n6AU8a5aUP1vmew800', '_blank');
+        // // Option A: Payment Link (Recommended for MVP)
+        // window.open('https://buy.stripe.com/test_28E14n6AU8a5aUP1vmew800', '_blank');
         
-        // Option B: If you set up Netlify functions, use this instead:
-        checkoutWithSession();
-    }
+        // // Option B: If you set up Netlify functions, use this instead:
+        // checkoutWithSession();
+        // }
 
-    // Advanced checkout with session (only if you set up backend)
-    // async function checkoutWithSession() {
-    //     const stripe = Stripe('pk_test_51Ps2dzE92IbV5FBUbYDh6nBs2WLVSofAVNDwp5emPBrLW1vdaRjZXVW2o6A9nYvPQDqy8k95sd8bQmF497HlHLUk00a07sJfdo');
+    //Advanced checkout with session (only if you set up backend)
+    async function checkoutWithSession() {
+        const stripe = Stripe('pk_test_51Ps2dzE92IbV5FBUbYDh6nBs2WLVSofAVNDwp5emPBrLW1vdaRjZXVW2o6A9nYvPQDqy8k95sd8bQmF497HlHLUk00a07sJfdo');
         
-    //     try {
-    //         const response = await fetch('/.netlify/functions/create-checkout-session', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({
-    //                 priceId: 'prod_SNNoPa6XKmWXaR',
-    //                 customerEmail: localStorage.getItem('userEmail') || ''
-    //             }),
-    //         });
+        try {
+            const response = await fetch('/.netlify/functions/create-checkout-session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    priceId: 'price_1RSd2vE92IbV5FBURORRmKR6ss',
+                    customerEmail: localStorage.getItem('userEmail') || ''
+                }),
+            });
             
-    //         const session = await response.json();
+            const session = await response.json();
             
-    //         if (session.error) {
-    //             alert('Error: ' + session.error);
-    //             return;
-    //         }
+            if (session.error) {
+                alert('Error: ' + session.error);
+                return;
+            }
             
-    //         const result = await stripe.redirectToCheckout({
-    //             sessionId: session.id,
-    //         });
+            const result = await stripe.redirectToCheckout({
+                sessionId: session.id,
+            });
             
-    //         if (result.error) {
-    //             alert(result.error.message);
-    //         }
-    //     } catch (error) {
-    //         console.error('Checkout error:', error);
-    //         alert('Something went wrong. Please try again.');
-    //     }
-    // }
+            if (result.error) {
+                alert(result.error.message);
+            }
+        } catch (error) {
+            console.error('Checkout error:', error);
+            alert('Something went wrong. Please try again.');
+        }
+    }
 
     // Utility functions
     function scrollToPrice() {
