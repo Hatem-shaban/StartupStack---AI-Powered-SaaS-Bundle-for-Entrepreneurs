@@ -253,16 +253,16 @@
 
     // Stripe Checkout (Payment Link Method - Simplest)
     function startCheckout() {
-    //     const email = localStorage.getItem('userEmail');
-    //     if (!email) {
-    //         captureEmail();
-    //         return;
-    //     }
+        const email = localStorage.getItem('userEmail');
+        if (!email) {
+            captureEmail();
+            return;
+        }
         
-    //     // Option A: Payment Link (Recommended for MVP)
-    //     window.open('https://buy.stripe.com/test_28E14n6AU8a5aUP1vmew800', '_blank');
+        // Option A: Payment Link (Recommended for MVP)
+        window.open('https://buy.stripe.com/test_28E14n6AU8a5aUP1vmew800', '_blank');
         
-    //     // Option B: If you set up Netlify functions, use this instead:
+        // Option B: If you set up Netlify functions, use this instead:
         checkoutWithSession();
     }
 
