@@ -13,6 +13,7 @@
             emailjs.init("7gqJJx6DqBcygdMlE");
         })();
     </script>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://*.stripe.com https://*.stripe.network; script-src 'self' 'unsafe-inline' https://*.stripe.com https://*.emailjs.com; style-src 'self' 'unsafe-inline' https://*.cloudflare.com;">
 
 </head>
 <body class="bg-gray-900 text-white">
@@ -238,12 +239,10 @@
 
     //Advanced checkout with session (only if you set up backend)
     async function checkoutWithSession() {
-    
     try {
         console.log('Starting checkout process...');
         const email = localStorage.getItem('userEmail');
-        console.log('User email:', email);
-
+        
         const response = await fetch('/.netlify/functions/create-checkout-session', {
             method: 'POST',
             headers: {
@@ -255,33 +254,37 @@
             }),
         });
         
-        console.log('Checkout session response:', response.status);
-        const session = await response.json();
+        const data = await response.text(); // Get raw response first
+        console.log('Raw response:', data);
         
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        if (session.error) {
-            console.error('Session error:', session.error);
-            alert('Error: ' + session.error);
-            return;
-        }
-        
-        console.log('Redirecting to checkout...');
-        const result = await stripe.redirectToCheckout({
-            sessionId: session.id,
-        });
-        
-        if (result.error) {
-            console.error('Stripe error:', result.error);
-            alert(result.error.message);
+        try {
+            const session = JSON.parse(data);
+            
+            if (!response.ok) {
+                throw new Error(`Server error: ${session.error || response.statusText}`);
+            }
+            
+            if (session.error) {
+                throw new Error(session.error);
+            }
+            
+            console.log('Redirecting to checkout...');
+            const result = await stripe.redirectToCheckout({
+                sessionId: session.id
+            });
+            
+            if (result.error) {
+                throw new Error(result.error.message);
+            }
+        } catch (parseError) {
+            console.error('Response parsing error:', parseError);
+            throw new Error('Invalid server response');
         }
     } catch (error) {
         console.error('Checkout error:', error);
-        alert('Something went wrong. Please try again.');
+        alert(`Checkout failed: ${error.message}`);
     }
-    }
+}
 
     async function startCheckout() {
     const email = localStorage.getItem('userEmail');
